@@ -10,6 +10,19 @@ import Combine
 
 final class HomeViewModel {
     private var cancellables: Set<AnyCancellable> = []
+    var items: [String] = []
+    
+    func updateItems(searchText: String) {
+        if searchText.trimmingCharacters(in: .whitespaces).isEmpty {
+            items = []
+            return
+        }
+        
+        let firstItem = "\(searchText)-1"
+        let secondItem = "\(searchText)-2"
+        let thirdItem = "\(searchText)-3"
+        items = [firstItem, secondItem, thirdItem]
+    }
 }
 
 // MARK: - Demo Weather API

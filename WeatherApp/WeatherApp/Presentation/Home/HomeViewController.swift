@@ -10,6 +10,10 @@ import UIKit
 class HomeViewController: UIViewController {
     let viewModel: HomeViewModel
     
+    private let tableView = UITableView()
+    private let searchController = UISearchController(searchResultsController: nil)
+    
+    // MARK: - init
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -19,19 +23,65 @@ class HomeViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         myPrint("HomeViewController::viewDidLoad")
         view.backgroundColor = .white
+        
+        setupUI()
+    }
+}
+
+// MARK: - Setup UI
+extension HomeViewController {
+    private func setupUI() {
+        setupTableView()
+        setupSearch()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        demoWeatherAPI()
+    private func setupTableView() {
+        tableView.dataSource = self
+        
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tableView)
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
     
-    private func demoWeatherAPI() {
-        // viewModel.fetchCities()
-        viewModel.fetchCurrentWeather()
+    private func setupSearch() {
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.placeholder = "Search city"
+        
+        navigationItem.searchController = searchController
+    }
+}
+
+// MARK: - UITableViewDataSource
+extension HomeViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        viewModel.items.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        cell.textLabel?.text = viewModel.items[indexPath.row]
+        return cell
+    }
+}
+
+// MARK: - UISearchResultsUpdating
+extension HomeViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        let text = searchController.searchBar.text ?? ""
+        
+        viewModel.updateItems(searchText: text)
+
+        tableView.reloadData()
     }
 }
