@@ -8,15 +8,14 @@
 import UIKit
 import Combine
 
-class SearchResultsViewController: UIViewController {
+class SearchResultsViewController: UITableViewController {
+    // MARK: - Private properties
     private var cancellables: Set<AnyCancellable> = []
     private let viewModel: SearchResultsViewModel
     
     private var items: [City] {
         viewModel.searchedCities
     }
-    
-    private let tableView = UITableView()
     
     // MARK: - init
     init(viewModel: SearchResultsViewModel) {
@@ -31,12 +30,12 @@ class SearchResultsViewController: UIViewController {
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .blue
-        
-        setupUI()
         binding()
     }
-    
+}
+
+// MARK: - Actions
+extension SearchResultsViewController {
     func updateItems(searchTerm: String) {
         viewModel.searchCities(searchTerm: searchTerm)
     }
@@ -54,50 +53,31 @@ extension SearchResultsViewController {
     }
 }
 
-// MARK: - Setup UI
-extension SearchResultsViewController {
-    private func setupUI() {
-        setupTableView()
-    }
-    
-    private func setupTableView() {
-        tableView.dataSource = self
-        tableView.delegate = self
-        
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(tableView)
-        
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-    }
-}
-
 // MARK: - UITableViewDataSource
-extension SearchResultsViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension SearchResultsViewController {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-        
+        cell.textLabel?.text = getDisplayText(indexPath: indexPath)
+        return cell
+    }
+    
+    private func getDisplayText(indexPath: IndexPath) -> String {
         let item = items[indexPath.row]
         let name = item.name
         let country = item.country
         
         /// some cities share the same name, therefore country should be displayed
-        cell.textLabel?.text = country.isEmpty ? name : "\(name) - \(country)"
-        return cell
+        return country.isEmpty ? name : "\(name) - \(country)"
     }
 }
 
 // MARK: - UITableViewDelegate
-extension SearchResultsViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+extension SearchResultsViewController {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         myPrint("did select item: \(items[indexPath.row].name)")
     }
 }
