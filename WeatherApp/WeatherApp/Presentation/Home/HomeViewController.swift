@@ -11,7 +11,7 @@ class HomeViewController: UIViewController {
     let viewModel: HomeViewModel
     
     private let tableView = UITableView()
-    private let searchController = UISearchController(searchResultsController: nil)
+    private let searchController = UISearchController(searchResultsController: SearchResultsViewController())
     
     // MARK: - init
     init(viewModel: HomeViewModel) {
@@ -57,6 +57,7 @@ extension HomeViewController {
     private func setupSearch() {
         searchController.searchResultsUpdater = self
         searchController.searchBar.placeholder = "Search city"
+        searchController.obscuresBackgroundDuringPresentation = false
         
         navigationItem.searchController = searchController
     }
@@ -81,6 +82,9 @@ extension HomeViewController: UISearchResultsUpdating {
         let text = searchController.searchBar.text ?? ""
         
         viewModel.updateItems(searchText: text)
+        
+        let searchController = searchController.searchResultsController as? SearchResultsViewController
+        searchController?.updateItems(searchText: text)
 
         tableView.reloadData()
     }
