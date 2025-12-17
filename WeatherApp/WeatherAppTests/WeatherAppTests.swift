@@ -19,6 +19,7 @@ final class WeatherAppTests: XCTestCase {
     }
 
     func testExample() throws {
+        XCTAssert(1 == 1)
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         // Any test you write for XCTest can be annotated as throws and async.
