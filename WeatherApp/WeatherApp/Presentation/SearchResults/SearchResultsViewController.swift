@@ -6,34 +6,55 @@
 //
 
 import UIKit
+import Combine
 
 class SearchResultsViewController: UIViewController {
-    var items = [String]()
+    private var cancellables: Set<AnyCancellable> = []
+    let viewModel: SearchResultsViewModel
+    
+    var items: [City] {
+        viewModel.searchedCities
+    }
     
     private let tableView = UITableView()
     
+    // MARK: - init
+    init(viewModel: SearchResultsViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .blue
         
         setupUI()
+        binding()
     }
     
-    func updateItems(searchText: String) {
-        if searchText.trimmingCharacters(in: .whitespaces).isEmpty {
-            items = []
-            tableView.reloadData()
-            return
-        }
-        
-        let firstItem = "\(searchText)-1"
-        let secondItem = "\(searchText)-2"
-        let thirdItem = "\(searchText)-3"
-        items = [firstItem, secondItem, thirdItem]
-        tableView.reloadData()
+    func updateItems(searchTerm: String) {
+        viewModel.searchCities(searchTerm: searchTerm)
     }
 }
 
+// MARK: - Binding
+extension SearchResultsViewController {
+    func binding() {
+        viewModel.$searchedCities
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] _ in
+                self?.tableView.reloadData()
+            })
+            .store(in: &cancellables)
+    }
+}
+
+// MARK: - Setup UI
 extension SearchResultsViewController {
     private func setupUI() {
         setupTableView()
@@ -63,7 +84,7 @@ extension SearchResultsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-        cell.textLabel?.text = items[indexPath.row]
+        cell.textLabel?.text = items[indexPath.row].name
         return cell
     }
 }
@@ -71,6 +92,6 @@ extension SearchResultsViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension SearchResultsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        myPrint("did select item: \(items[indexPath.row])")
+        myPrint("did select item: \(items[indexPath.row].name)")
     }
 }

@@ -8,14 +8,15 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-    let viewModel: HomeViewModel
+    private let viewModel: HomeViewModel
+    private let searchController: UISearchController
     
     private let tableView = UITableView()
-    private let searchController = UISearchController(searchResultsController: SearchResultsViewController())
     
     // MARK: - init
-    init(viewModel: HomeViewModel) {
+    init(viewModel: HomeViewModel, searchController: UISearchController) {
         self.viewModel = viewModel
+        self.searchController = searchController
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -81,11 +82,7 @@ extension HomeViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         let text = searchController.searchBar.text ?? ""
         
-        viewModel.updateItems(searchText: text)
-        
         let searchController = searchController.searchResultsController as? SearchResultsViewController
-        searchController?.updateItems(searchText: text)
-
-        tableView.reloadData()
+        searchController?.updateItems(searchTerm: text)
     }
 }
