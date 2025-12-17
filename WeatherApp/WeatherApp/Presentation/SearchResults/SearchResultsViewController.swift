@@ -10,9 +10,9 @@ import Combine
 
 class SearchResultsViewController: UIViewController {
     private var cancellables: Set<AnyCancellable> = []
-    let viewModel: SearchResultsViewModel
+    private let viewModel: SearchResultsViewModel
     
-    var items: [City] {
+    private var items: [City] {
         viewModel.searchedCities
     }
     
@@ -44,7 +44,7 @@ class SearchResultsViewController: UIViewController {
 
 // MARK: - Binding
 extension SearchResultsViewController {
-    func binding() {
+    private func binding() {
         viewModel.$searchedCities
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] _ in
@@ -84,7 +84,13 @@ extension SearchResultsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-        cell.textLabel?.text = items[indexPath.row].name
+        
+        let item = items[indexPath.row]
+        let name = item.name
+        let country = item.country
+        
+        /// some cities share the same name, therefore country should be displayed
+        cell.textLabel?.text = country.isEmpty ? name : "\(name) - \(country)"
         return cell
     }
 }
