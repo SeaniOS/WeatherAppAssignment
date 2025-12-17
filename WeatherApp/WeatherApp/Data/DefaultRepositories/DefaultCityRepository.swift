@@ -9,9 +9,7 @@ import Foundation
 
 final class DefaultCityRepository: CityRepository {
     func searchCities(searchTerm: String) async throws -> SearchCityResponse? {
-        let urlString = "\(APIConstants.searchURL)?key=\(APIConstants.key)&query=\(searchTerm)&format=json&num_of_results=10"
-        
-        guard let url = URL(string: urlString) else {
+        guard let url = APIQuery.searchCities(searchTerm).url else {
             myPrint("Invalid URL")
             return nil
         }
@@ -31,32 +29,4 @@ final class DefaultCityRepository: CityRepository {
         
         return try JSONDecoder().decode(SearchCityResponse.self, from: data)
     }
-}
-
-extension DefaultCityRepository {
-    /*
-    func searchCities(searchTerm: String) {
-        let urlString = "\(APIConstants.searchURL)?key=\(APIConstants.key)&query=\(searchTerm)&format=json&num_of_results=10"
-        
-        guard let url = URL(string: urlString) else {
-            myPrint("Invalid URL")
-            return
-        }
-        
-        URLSession.shared
-            .dataTaskPublisher(for: url)
-            .sink { completion in
-                if case .failure(let err) = completion {
-                    myPrint("Retrieving data failed with error \(err)")
-                }
-            } receiveValue: { data, response in
-                // myPrint(data)
-                // myPrint(response)
-                if let jsonString = String(data: data, encoding: .utf8) {
-                    myPrint(jsonString)
-                }
-            }
-            .store(in: &cancellables)
-    }
-    */
 }
