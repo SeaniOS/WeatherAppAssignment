@@ -17,7 +17,7 @@ final class HomeViewModel {
 extension HomeViewModel {
     
     func fetchCurrentWeather() {
-        let urlString = "\(APIConstants.localWeatherURL)?key=\(APIConstants.key)&query=21.033,105.850&format=json&num_of_days=1"
+        let urlString = "\(APIConstants.localWeatherURLString)?key=\(APIConstants.key)&query=21.033,105.850&format=json&num_of_days=1"
         
         guard let url = URL(string: urlString) else {
             myPrint("Invalid URL")

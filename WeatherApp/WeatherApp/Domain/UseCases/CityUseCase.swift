@@ -21,8 +21,8 @@ final class DefaultCityUseCase: CityUseCase {
     func searchCities(searchTerm: String) async -> [City] {
         do {
             let response = try await cityRepository.searchCities(searchTerm: searchTerm)
-            myPrint(response ?? "no response")
-            return response?.toCities() ?? []
+            myPrint(response)
+            return response.toCities()
         } catch {
             myPrint("searchCities with error: \(error.localizedDescription)")
             return []

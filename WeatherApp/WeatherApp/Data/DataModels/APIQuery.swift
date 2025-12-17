@@ -10,17 +10,17 @@ import Foundation
 enum APIQuery {
     case searchCities(String)
     
-    var url: URL? {
+    var url: URL {
         switch self {
         case .searchCities(let searchTerm):
-            var components = URLComponents(string: APIConstants.searchURL)
+            var components = URLComponents(string: APIConstants.searchURLString)
             components?.queryItems = [
                 .init(name: "key", value: APIConstants.key),
                 .init(name: "query", value: searchTerm),
                 .init(name: "format", value: "json"),
                 .init(name: "num_of_results", value: "10") /// Premium API: 10...50
             ]
-            return components?.url
+            return components?.url ?? URL(string: APIConstants.searchURLString)! /// force-unwrapped for unit tests purpose
         }
     }
 }

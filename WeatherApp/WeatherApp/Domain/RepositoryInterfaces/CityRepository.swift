@@ -8,5 +8,5 @@
 import Foundation
 
 protocol CityRepository {
-    func searchCities(searchTerm: String) async throws -> SearchCityResponse?
+    func searchCities(searchTerm: String) async throws -> SearchCityResponse
 }

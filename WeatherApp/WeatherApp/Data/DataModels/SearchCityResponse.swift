@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SearchCityResponse: Codable {
+struct SearchCityResponse: Codable, Equatable {
     let searchAPI: SearchAPI
     
     private enum CodingKeys: String, CodingKey {
@@ -15,7 +15,7 @@ struct SearchCityResponse: Codable {
     }
 }
 
-struct SearchAPI: Codable {
+struct SearchAPI: Codable, Equatable {
     let cities: [CityResponse]
     
     private enum CodingKeys: String, CodingKey {
@@ -23,14 +23,14 @@ struct SearchAPI: Codable {
     }
 }
 
-struct CityResponse: Codable {
+struct CityResponse: Codable, Equatable {
     let areaName: [Value]
     let country: [Value]
     let latitude: String
     let longitude: String
 }
 
-struct Value: Codable {
+struct Value: Codable, Equatable {
     let value: String
 }
 
