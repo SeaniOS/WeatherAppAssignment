@@ -12,8 +12,8 @@ class DependencyInjectionHandler {
         return HomeViewModel()
     }
     
-    func makeSearchResultsViewModel() -> SearchResultsViewModel {
-        return SearchResultsViewModel(cityUseCase: makeCityUseCase())
+    func makeSearchResultsViewModel() -> DefaultSearchResultsViewModel {
+        return DefaultSearchResultsViewModel(cityUseCase: makeCityUseCase())
     }
 }
 

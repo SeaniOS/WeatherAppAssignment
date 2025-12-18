@@ -9,10 +9,16 @@ import Foundation
 @testable import WeatherApp
 
 class MockURLSession: URLSessionProtocol {
-    var data: Data?
-    var urlResponse: URLResponse?
+    var data: Data!
+    var urlResponse: URLResponse!
+    // var error: Error?
     
     func data(from url: URL) async throws -> (Data, URLResponse) {
-        return (data ?? Data(), urlResponse ?? URLResponse())
+        /*
+        if let error {
+            throw error
+        }
+        */
+        return (data, urlResponse)
     }
 }

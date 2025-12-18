@@ -11,14 +11,14 @@ import Combine
 class SearchResultsViewController: UITableViewController {
     // MARK: - Private properties
     private var cancellables: Set<AnyCancellable> = []
-    private let viewModel: SearchResultsViewModel
+    private let viewModel: DefaultSearchResultsViewModel
     
     private var items: [City] {
         viewModel.searchedCities
     }
     
     // MARK: - init
-    init(viewModel: SearchResultsViewModel) {
+    init(viewModel: DefaultSearchResultsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -37,7 +37,9 @@ class SearchResultsViewController: UITableViewController {
 // MARK: - Actions
 extension SearchResultsViewController {
     func updateItems(searchTerm: String) {
-        viewModel.searchCities(searchTerm: searchTerm)
+        Task {
+            await viewModel.searchCities(searchTerm: searchTerm)
+        }
     }
 }
 
