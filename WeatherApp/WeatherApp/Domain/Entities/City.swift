@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct City: Codable {
+struct City: Codable, Equatable {
     let name: String
     let country: String
     let latitude: String

@@ -38,13 +38,15 @@ struct Value: Codable, Equatable {
 extension SearchCityResponse {
     func toCities() -> [City] {
         self.searchAPI.cities.compactMap { cityResponse in
-            guard let name = cityResponse.areaName.first?.value else { return nil }
+            let name = cityResponse.areaName.first?.value ?? ""
+            guard !name.isEmpty else { return nil }
+            
             let country = cityResponse.country.first?.value ?? ""
+            
             return City(name: name,
                         country: country,
                         latitude: cityResponse.latitude,
                         longitude: cityResponse.longitude)
         }
     }
-    
 }

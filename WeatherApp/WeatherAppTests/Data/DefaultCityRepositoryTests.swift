@@ -40,7 +40,7 @@ final class DefaultCityRepositoryTests: XCTestCase {
         let response = try await repository.searchCities(searchTerm: searchTerm)
         
         //
-        XCTAssertEqual(response, makeExpectedSearchCityResponse())
+        XCTAssertEqual(response, TestHelpers.makeSearchCityResponse())
     }
     
     func testSearchCities_StatusCode400() async throws {
@@ -74,12 +74,5 @@ extension DefaultCityRepositoryTests {
                                statusCode: statusCode,
                                httpVersion: nil,
                                headerFields: nil)
-    }
-    
-    private func makeExpectedSearchCityResponse() -> SearchCityResponse {
-        let name = Value(value: "Hanoi")
-        let country = Value(value: "Vietnam")
-        let city: CityResponse = .init(areaName: [name], country: [country], latitude: "21.033", longitude: "105.850")
-        return .init(searchAPI: .init(cities: [city]))
     }
 }
