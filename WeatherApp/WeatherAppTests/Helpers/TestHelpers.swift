@@ -55,9 +55,7 @@ struct TestHelpers {
 extension TestHelpers {
     static func makeMockSearchCitiesResponseData() -> Data? {
         let bundle = Bundle(for: WeatherAppTests.self)
-        guard let jsonURL = bundle.url(forResource: "SearchCitiesDummyResponse", withExtension: ".json") else {
-            fatalError("no json file")
-        }
+        let jsonURL = bundle.url(forResource: "SearchCitiesDummyResponse", withExtension: ".json")!
         
         let mockData = try? Data(contentsOf: jsonURL)
         return mockData

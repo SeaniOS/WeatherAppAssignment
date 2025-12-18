@@ -18,19 +18,13 @@ final class MockSearchResultsViewModel: SearchResultsViewModel {
         return $searchedCities.eraseToAnyPublisher()
     }
     
-    var searchTermSubject = PassthroughSubject<String?, Never>()
+    var searchTermSubject = PassthroughSubject<String, Never>()
     
     init() {
         searchTermSubject
             .sink { [weak self] searchTerm in
-                self?.receivedSearchTerm = searchTerm ?? ""
+                self?.receivedSearchTerm = searchTerm
             }
             .store(in: &cancellables)
-    }
-}
-
-extension MockSearchResultsViewModel {
-    func searchCities(searchTerm: String?) async {
-        receivedSearchTerm = searchTerm ?? ""
     }
 }

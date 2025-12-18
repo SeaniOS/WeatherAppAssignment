@@ -38,6 +38,7 @@ class SearchResultsViewController: UITableViewController {
 // MARK: - Actions
 extension SearchResultsViewController {
     func updateItems(searchTerm: String?) {
+        guard let searchTerm else { return }
         viewModel.searchTermSubject.send(searchTerm)
     }
 }

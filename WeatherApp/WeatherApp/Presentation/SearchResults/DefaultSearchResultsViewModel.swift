@@ -12,7 +12,7 @@ protocol SearchResultsViewModel {
     var searchedCities: [City] { get }
     var searchedCitiesPublisher: AnyPublisher<[City], Never> { get }
     
-    var searchTermSubject: PassthroughSubject<String?, Never> { get }
+    var searchTermSubject: PassthroughSubject<String, Never> { get }
 }
 
 final class DefaultSearchResultsViewModel: SearchResultsViewModel {
@@ -25,7 +25,7 @@ final class DefaultSearchResultsViewModel: SearchResultsViewModel {
         return $searchedCities.eraseToAnyPublisher()
     }
     
-    let searchTermSubject = PassthroughSubject<String?, Never>()
+    let searchTermSubject = PassthroughSubject<String, Never>()
     
     // MARK: - Init
     init(cityUseCase: CityUseCase) {
