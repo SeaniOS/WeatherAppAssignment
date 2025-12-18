@@ -51,7 +51,6 @@ final class HomeViewControllerTests: XCTestCase {
         suit.searchController.searchBar.text = searchTerm
         suit.updateSearchResults(for: suit.searchController)
         
-        try await Task.sleep(nanoseconds: 100_000_000) // 0.1s
         XCTAssertTrue(searchResultsViewModel.receivedSearchTerm == searchTerm)
     }
     
@@ -61,7 +60,6 @@ final class HomeViewControllerTests: XCTestCase {
         suit.searchController.searchBar.text = nil
         suit.updateSearchResults(for: suit.searchController)
         
-        try await Task.sleep(nanoseconds: 100_000_000) // 0.1s
         XCTAssertTrue(searchResultsViewModel.receivedSearchTerm == "")
     }
 }

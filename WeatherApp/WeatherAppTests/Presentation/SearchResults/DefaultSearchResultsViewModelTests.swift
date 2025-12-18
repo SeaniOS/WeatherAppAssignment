@@ -27,7 +27,7 @@ final class DefaultSearchResultsViewModelTests: XCTestCase {
     }
     
     // MARK: Unit tests
-    func testSearchCities_StatusCode200() async {
+    func testSearchCities_StatusCode200() async throws {
         // given
         mockSession.urlResponse = TestHelpers.makeMockURLResponse(statusCode: 200)
         let repository = DefaultCityRepository(session: mockSession)
@@ -45,7 +45,8 @@ final class DefaultSearchResultsViewModelTests: XCTestCase {
             .store(in: &subscriptions)
         
         // when
-        await viewModel.searchCities(searchTerm: searchTerm)
+        viewModel.searchTermSubject.send(searchTerm)
+        try await Task.sleep(nanoseconds: 500_000_000)
         
         // then
         XCTAssertEqual(searchedCities, expectedCities)

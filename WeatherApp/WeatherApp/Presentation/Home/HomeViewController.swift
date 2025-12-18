@@ -83,9 +83,7 @@ extension HomeViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         let text = searchController.searchBar.text
         
-        Task {
-            let searchController = searchController.searchResultsController as? SearchResultsViewController
-            await searchController?.updateItems(searchTerm: text)
-        }
+        let searchController = searchController.searchResultsController as? SearchResultsViewController
+        searchController?.updateItems(searchTerm: text)
     }
 }
