@@ -18,15 +18,16 @@ class MockURLSession: URLSessionProtocol {
 }
 
 final class DefaultCityRepositoryTests: XCTestCase {
-    
-    let mockSession = MockURLSession()
-    let searchTerm = "hanoi"
+    private let searchTerm = "hanoi"
+    private var mockSession: MockURLSession!
     
     override func setUpWithError() throws {
+        mockSession = MockURLSession()
         mockSession.data = makeMockData()
     }
     
     override func tearDownWithError() throws {
+        mockSession = nil
     }
     
     @MainActor
