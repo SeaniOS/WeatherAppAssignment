@@ -9,12 +9,18 @@ import Foundation
 import Combine
 
 protocol SearchResultsViewModel {
-    
+    var searchedCities: [City] { get }
+    var searchedCitiesPublisher: AnyPublisher<[City], Never> { get }
+    func searchCities(searchTerm: String) async
 }
 
 final class DefaultSearchResultsViewModel: SearchResultsViewModel {
     private let cityUseCase: CityUseCase
     @Published private(set) var searchedCities = [City]()
+    
+    var searchedCitiesPublisher: AnyPublisher<[City], Never> {
+        return $searchedCities.eraseToAnyPublisher()
+    }
     
     // MARK: - Init
     init(cityUseCase: CityUseCase) {

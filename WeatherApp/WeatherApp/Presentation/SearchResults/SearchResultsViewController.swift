@@ -11,18 +11,19 @@ import Combine
 class SearchResultsViewController: UITableViewController {
     // MARK: - Private properties
     private var cancellables: Set<AnyCancellable> = []
-    private let viewModel: DefaultSearchResultsViewModel
+    private let viewModel: SearchResultsViewModel
     
     private var items: [City] {
         viewModel.searchedCities
     }
     
     // MARK: - init
-    init(viewModel: DefaultSearchResultsViewModel) {
+    init(viewModel: SearchResultsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -36,21 +37,19 @@ class SearchResultsViewController: UITableViewController {
 
 // MARK: - Actions
 extension SearchResultsViewController {
-    func updateItems(searchTerm: String) {
-        Task {
-            await viewModel.searchCities(searchTerm: searchTerm)
-        }
+    func updateItems(searchTerm: String) async {
+        await viewModel.searchCities(searchTerm: searchTerm)
     }
 }
 
 // MARK: - Binding
 extension SearchResultsViewController {
     private func binding() {
-        viewModel.$searchedCities
+        viewModel.searchedCitiesPublisher
             .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { [weak self] _ in
+            .sink { [weak self] _ in
                 self?.tableView.reloadData()
-            })
+            }
             .store(in: &cancellables)
     }
 }

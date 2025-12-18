@@ -37,7 +37,7 @@ final class DefaultSearchResultsViewModelTests: XCTestCase {
         let expectedCities = [TestHelpers.makeCity()]
         var searchedCities = [City]()
         
-        viewModel.$searchedCities
+        viewModel.searchedCitiesPublisher // $searchedCities
             .dropFirst()
             .sink(receiveValue: { value in
                 searchedCities = value
