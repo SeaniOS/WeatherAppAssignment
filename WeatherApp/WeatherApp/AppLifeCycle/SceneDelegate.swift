@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -20,7 +21,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         
         let homeViewController = makeHomeViewController()
-        window.rootViewController = UINavigationController(rootViewController: homeViewController)
+        let rootViewController = UINavigationController(rootViewController: homeViewController)
+        
+        // let cityView = CityView(viewModel: DefaultCityViewModel())
+        // let cityViewController = UIHostingController(rootView: cityView)
+        window.rootViewController = rootViewController
         
         self.window = window
         window.makeKeyAndVisible()

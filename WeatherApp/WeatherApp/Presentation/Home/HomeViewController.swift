@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class HomeViewController: UIViewController {
     private let viewModel: HomeViewModel
@@ -27,7 +28,7 @@ class HomeViewController: UIViewController {
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = AppConstants.ThemeColor.pantoneCloudDancer
+        view.backgroundColor = AppConstants.ThemeColor.pantoneCloudDancerUIColor
         
         setupUI()
     }
@@ -62,6 +63,9 @@ extension HomeViewController {
         searchController.obscuresBackgroundDuringPresentation = false
         
         navigationItem.searchController = searchController
+        
+        let searchResultsController = searchController.searchResultsController as? SearchResultsViewController
+        searchResultsController?.delegate = self
     }
 }
 
@@ -83,7 +87,16 @@ extension HomeViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         let text = searchController.searchBar.text
         
-        let searchController = searchController.searchResultsController as? SearchResultsViewController
-        searchController?.updateItems(searchTerm: text)
+        let searchResultsController = searchController.searchResultsController as? SearchResultsViewController
+        searchResultsController?.updateItems(searchTerm: text)
+    }
+}
+
+// MARK: - SearchResultsViewControllerDelegate
+extension HomeViewController: SearchResultsDelegate {
+    func didSelectCity(_ city: City) {
+        let cityView = CityView(viewModel: DefaultCityViewModel())
+        let cityViewController = UIHostingController(rootView: cityView)
+        navigationController?.pushViewController(cityViewController, animated: true)
     }
 }

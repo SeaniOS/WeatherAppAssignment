@@ -8,14 +8,19 @@
 import UIKit
 import Combine
 
+protocol SearchResultsDelegate: AnyObject {
+    func didSelectCity(_ city: City)
+}
+
 class SearchResultsViewController: UITableViewController {
-    // MARK: - Private properties
+    // MARK: - Properties
     private var cancellables: Set<AnyCancellable> = []
     private let viewModel: SearchResultsViewModel
     
-    private var items: [City] {
+    private var cities: [City] {
         viewModel.searchedCities
     }
+    weak var delegate: SearchResultsDelegate?
     
     // MARK: - init
     init(viewModel: SearchResultsViewModel) {
@@ -58,7 +63,7 @@ extension SearchResultsViewController {
 // MARK: - UITableViewDataSource
 extension SearchResultsViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return cities.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -68,7 +73,7 @@ extension SearchResultsViewController {
     }
     
     private func getDisplayText(indexPath: IndexPath) -> String {
-        let item = items[indexPath.row]
+        let item = cities[indexPath.row]
         let name = item.name
         let country = item.country
         
@@ -80,6 +85,7 @@ extension SearchResultsViewController {
 // MARK: - UITableViewDelegate
 extension SearchResultsViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        myPrint("did select item: \(items[indexPath.row].name)")
+        let city = cities[indexPath.row]
+        delegate?.didSelectCity(city)
     }
 }
