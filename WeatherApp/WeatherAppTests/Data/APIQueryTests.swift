@@ -10,7 +10,7 @@ import XCTest
 
 final class APIQueryTests: XCTestCase {
     
-    private let searchTerm = "hanoi"
+    private let searchTerm = TestHelpers.searchTerm
     
     func testMakeSearchURL_ForcedUnwrappedSafety() {
         let url = APIQuery.makeSearchURL()

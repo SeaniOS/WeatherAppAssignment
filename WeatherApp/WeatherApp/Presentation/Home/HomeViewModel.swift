@@ -9,13 +9,13 @@ import Foundation
 import Combine
 
 final class HomeViewModel {
-    private var cancellables: Set<AnyCancellable> = []
+    // private var cancellables: Set<AnyCancellable> = []
     var items: [String] = []
 }
 
 // MARK: - Demo Weather API
 extension HomeViewModel {
-    
+    /*
     func fetchCurrentWeather() {
         let urlString = "\(APIConstants.localWeatherURLString)?key=\(APIConstants.key)&query=21.033,105.850&format=json&num_of_days=1"
         
@@ -37,4 +37,5 @@ extension HomeViewModel {
             }
             .store(in: &cancellables)
     }
+    */
 }

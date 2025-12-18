@@ -8,22 +8,13 @@
 import XCTest
 @testable import WeatherApp
 
-class MockURLSession: URLSessionProtocol {
-    var data: Data?
-    var urlResponse: URLResponse?
-    
-    func data(from url: URL) async throws -> (Data, URLResponse) {
-        return (data ?? Data(), urlResponse ?? URLResponse())
-    }
-}
-
 final class DefaultCityRepositoryTests: XCTestCase {
-    private let searchTerm = "hanoi"
+    private let searchTerm = TestHelpers.searchTerm
     private var mockSession: MockURLSession!
     
     override func setUpWithError() throws {
         mockSession = MockURLSession()
-        mockSession.data = makeMockData()
+        mockSession.data = TestHelpers.makeMockSearchCitiesResponseData()
     }
     
     override func tearDownWithError() throws {
@@ -33,7 +24,7 @@ final class DefaultCityRepositoryTests: XCTestCase {
     @MainActor
     func testSearchCities_StatusCode200() async throws {
         //
-        mockSession.urlResponse = makeMockResponse(statusCode: 200)
+        mockSession.urlResponse = TestHelpers.makeMockURLResponse(statusCode: 200)
         let repository = DefaultCityRepository(session: mockSession)
         
         //
@@ -45,7 +36,7 @@ final class DefaultCityRepositoryTests: XCTestCase {
     
     func testSearchCities_StatusCode400() async throws {
         //
-        mockSession.urlResponse = makeMockResponse(statusCode: 400)
+        mockSession.urlResponse = TestHelpers.makeMockURLResponse(statusCode: 400)
         let repository = await DefaultCityRepository(session: mockSession)
         
         //
@@ -55,24 +46,5 @@ final class DefaultCityRepositoryTests: XCTestCase {
             //
             XCTAssertEqual(error as? URLError, URLError(.badServerResponse))
         }
-    }
-}
-
-extension DefaultCityRepositoryTests {
-    private func makeMockData() -> Data? {
-        let bundle = Bundle(for: type(of: self))
-        guard let jsonURL = bundle.url(forResource: "SearchCitiesDummyResponse", withExtension: ".json") else {
-            fatalError("no json file")
-        }
-        
-        let mockData = try? Data(contentsOf: jsonURL)
-        return mockData
-    }
-    
-    private func makeMockResponse(statusCode: Int) -> HTTPURLResponse? {
-        return HTTPURLResponse(url: URL(string: APIConstants.searchURLString)!,
-                               statusCode: statusCode,
-                               httpVersion: nil,
-                               headerFields: nil)
     }
 }
