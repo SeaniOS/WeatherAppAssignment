@@ -8,8 +8,8 @@
 import Foundation
 
 class DependencyInjectionHandler {
-    func makeHomeViewModel() -> HomeViewModel {
-        return HomeViewModel()
+    func makeHomeViewModel() -> DefaultHomeViewModel {
+        return DefaultHomeViewModel()
     }
     
     func makeSearchResultsViewModel() -> DefaultSearchResultsViewModel {

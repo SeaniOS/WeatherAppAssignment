@@ -17,7 +17,7 @@ final class MockSearchResultsViewModel: SearchResultsViewModel {
         return $searchedCities.eraseToAnyPublisher()
     }
     
-    func searchCities(searchTerm: String) async {
-        receivedSearchTerm = searchTerm
+    func searchCities(searchTerm: String?) async {
+        receivedSearchTerm = searchTerm ?? ""
     }
 }

@@ -37,7 +37,7 @@ class SearchResultsViewController: UITableViewController {
 
 // MARK: - Actions
 extension SearchResultsViewController {
-    func updateItems(searchTerm: String) async {
+    func updateItems(searchTerm: String?) async {
         await viewModel.searchCities(searchTerm: searchTerm)
     }
 }

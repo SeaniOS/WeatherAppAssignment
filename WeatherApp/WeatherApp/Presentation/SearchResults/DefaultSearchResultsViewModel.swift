@@ -11,7 +11,7 @@ import Combine
 protocol SearchResultsViewModel {
     var searchedCities: [City] { get }
     var searchedCitiesPublisher: AnyPublisher<[City], Never> { get }
-    func searchCities(searchTerm: String) async
+    func searchCities(searchTerm: String?) async
 }
 
 final class DefaultSearchResultsViewModel: SearchResultsViewModel {
@@ -27,10 +27,10 @@ final class DefaultSearchResultsViewModel: SearchResultsViewModel {
         self.cityUseCase = cityUseCase
     }
     
-    func searchCities(searchTerm: String) async {
+    func searchCities(searchTerm: String?) async {
         var cities = [City]()
         
-        if !searchTerm.trimmingCharacters(in: .whitespaces).isEmpty {
+        if let searchTerm, !searchTerm.trimmingCharacters(in: .whitespaces).isEmpty {
             cities = await cityUseCase.searchCities(searchTerm: searchTerm)
             myPrint(cities)
         }

@@ -52,10 +52,3 @@ final class SearchResultsViewControllerTests: XCTestCase {
         XCTAssertTrue(true)
     }
 }
-
-extension XCTestCase {
-    func loadViewController(_ viewController: UIViewController) {
-        _ = viewController.view
-        RunLoop.main.run(until: Date())
-    }
-}

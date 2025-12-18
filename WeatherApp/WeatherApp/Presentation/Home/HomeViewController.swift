@@ -9,9 +9,8 @@ import UIKit
 
 class HomeViewController: UIViewController {
     private let viewModel: HomeViewModel
-    private let searchController: UISearchController
-    
-    private let tableView = UITableView()
+    let searchController: UISearchController
+    let tableView = UITableView()
     
     // MARK: - init
     init(viewModel: HomeViewModel, searchController: UISearchController) {
@@ -20,6 +19,7 @@ class HomeViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -80,7 +80,7 @@ extension HomeViewController: UITableViewDataSource {
 // MARK: - UISearchResultsUpdating
 extension HomeViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        let text = searchController.searchBar.text ?? ""
+        let text = searchController.searchBar.text
         
         Task {
             let searchController = searchController.searchResultsController as? SearchResultsViewController
