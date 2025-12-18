@@ -27,8 +27,7 @@ class HomeViewController: UIViewController {
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        myPrint("HomeViewController::viewDidLoad")
-        view.backgroundColor = .white
+        view.backgroundColor = AppConstants.ThemeColor.pantoneCloudDancer
         
         setupUI()
     }
@@ -37,12 +36,14 @@ class HomeViewController: UIViewController {
 // MARK: - Setup UI
 extension HomeViewController {
     private func setupUI() {
+        self.title = "Home"
         setupTableView()
         setupSearch()
     }
     
     private func setupTableView() {
         tableView.dataSource = self
+        tableView.backgroundColor = .clear
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
