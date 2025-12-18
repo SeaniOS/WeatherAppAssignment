@@ -62,5 +62,5 @@ extension CityView {
 }
 
 #Preview {
-    CityView(viewModel: DefaultCityViewModel())
+    // CityView(viewModel: DefaultCityViewModel())
 }

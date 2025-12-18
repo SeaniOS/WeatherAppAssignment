@@ -17,8 +17,8 @@ struct TestHelpers {
     static let searchTerm = "hanoi"
     
     static func makeSearchCityResponse() -> SearchCityResponse {
-        let name = Value(value: name)
-        let country = Value(value: country)
+        let name = ValueWrapper(value: name)
+        let country = ValueWrapper(value: country)
         
         let city: CityResponse = .init(areaName: [name],
                                        country: [country],
@@ -28,7 +28,7 @@ struct TestHelpers {
     }
     
     static func makeSearchCityResponse_MissingAreaName() -> SearchCityResponse {
-        let country = Value(value: country)
+        let country = ValueWrapper(value: country)
         
         let city: CityResponse = .init(areaName: [],
                                        country: [country],
@@ -38,7 +38,7 @@ struct TestHelpers {
     }
     
     static func makeSearchCityResponse_MissingCountry() -> SearchCityResponse {
-        let name = Value(value: name)
+        let name = ValueWrapper(value: name)
         
         let city: CityResponse = .init(areaName: [name],
                                        country: [],

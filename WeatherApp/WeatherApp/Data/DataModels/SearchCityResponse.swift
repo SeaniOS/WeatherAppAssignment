@@ -24,14 +24,10 @@ struct SearchAPI: Codable, Equatable {
 }
 
 struct CityResponse: Codable, Equatable {
-    let areaName: [Value]
-    let country: [Value]
+    let areaName: [ValueWrapper]
+    let country: [ValueWrapper]
     let latitude: String
     let longitude: String
-}
-
-struct Value: Codable, Equatable {
-    let value: String
 }
 
 // MARK: - Convert

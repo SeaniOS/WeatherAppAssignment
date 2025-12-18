@@ -11,7 +11,6 @@ import SwiftUI
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    private let DIHandler = DependencyInjectionHandler()
 
     /// Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
     /// If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
@@ -20,32 +19,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         
-        let homeViewController = makeHomeViewController()
+        let homeViewController = Scene().makeHomeViewController()
         let rootViewController = UINavigationController(rootViewController: homeViewController)
         
-        // let cityView = CityView(viewModel: DefaultCityViewModel())
-        // let cityViewController = UIHostingController(rootView: cityView)
-        window.rootViewController = rootViewController
+        window.rootViewController = Scene().makeCityViewController() // rootViewController
         
         self.window = window
         window.makeKeyAndVisible()
-    }
-}
-
-extension SceneDelegate {
-    private func makeHomeViewController() -> HomeViewController {
-        let homeViewModel = DIHandler.makeHomeViewModel()
-        let searchController = makeSearchController()
-        
-        let homeViewController = HomeViewController(viewModel: homeViewModel, searchController: searchController)
-        return homeViewController
-    }
-    
-    private func makeSearchController() -> UISearchController {
-        let viewModel = DIHandler.makeSearchResultsViewModel()
-        let searchResultsController = SearchResultsViewController(viewModel: viewModel)
-        
-        let searchController = UISearchController(searchResultsController: searchResultsController)
-        return searchController
     }
 }
