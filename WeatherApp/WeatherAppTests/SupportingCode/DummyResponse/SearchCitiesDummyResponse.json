@@ -1,0 +1,31 @@
+{
+    "search_api": {
+        "result": [
+            {
+                "areaName": [
+                    {
+                        "value": "Hanoi"
+                    }
+                ],
+                "country": [
+                    {
+                        "value": "Vietnam"
+                    }
+                ],
+                "region": [
+                    {
+                        "value": ""
+                    }
+                ],
+                "latitude": "21.033",
+                "longitude": "105.850",
+                "population": "1431377",
+                "weatherUrl": [
+                    {
+                        "value": "https://www.worldweatheronline.com/v2/weather.aspx?q=21.0333,105.85"
+                    }
+                ]
+            }
+        ]
+    }
+}
