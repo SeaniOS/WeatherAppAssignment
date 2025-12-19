@@ -28,8 +28,11 @@ final class CityViewModelTests: XCTestCase {
         let city = TestHelpers.makeCity()
         
         mockSession.urlResponse = TestHelpers.makeMockURLResponse(statusCode: 200)
-        let repository = DefaultWeatherRepository(session: mockSession)
-        let useCase = DefaultWeatherUseCase(weatherRepository: repository)
+        
+        let weatherRepository = DefaultWeatherRepository(session: mockSession)
+        let cacheRepository = MockCacheWeatherRepository()
+        let useCase = DefaultWeatherUseCase(weatherRepository: weatherRepository,
+                                            cacheRepository: cacheRepository)
         
         let viewModel = DefaultCityViewModel(city: city, weatherUseCase: useCase)
         

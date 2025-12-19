@@ -42,11 +42,16 @@ extension DependencyInjectionHandler {
 // MARK: - Weather
 extension DependencyInjectionHandler {
     private func makeWeatherUseCase() -> WeatherUseCase {
-        return DefaultWeatherUseCase(weatherRepository: makeWeatherRepository())
+        return DefaultWeatherUseCase(weatherRepository: makeWeatherRepository(),
+                                     cacheRepository: makeCacheWeatherRepository())
     }
     
     private func makeWeatherRepository() -> WeatherRepository {
         return DefaultWeatherRepository()
+    }
+    
+    private func makeCacheWeatherRepository() -> CacheWeatherRepository {
+        return DefaultCacheWeatherRepository.shared
     }
 }
 

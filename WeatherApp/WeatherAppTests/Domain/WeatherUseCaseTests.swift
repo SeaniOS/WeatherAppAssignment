@@ -21,13 +21,49 @@ final class WeatherUseCaseTests: XCTestCase {
         mockSession = nil
     }
 
-    func testCityWeather_StatusCode200() async {
+    func testCityWeather_StatusCode200_NoCache() async {
         // given
-        mockSession.urlResponse = TestHelpers.makeMockURLResponse(statusCode: 200)
-        let repository = DefaultWeatherRepository(session: mockSession)
-        let useCase = DefaultWeatherUseCase(weatherRepository: repository)
-        
         let expectation: CurrentWeather = TestHelpers.makeCurrentWeather()
+        
+        mockSession.urlResponse = TestHelpers.makeMockURLResponse(statusCode: 200)
+        
+        let weatherRepository = DefaultWeatherRepository(session: mockSession)
+        let cacheRepository = MockCacheWeatherRepository()
+        let useCase = DefaultWeatherUseCase(weatherRepository: weatherRepository, cacheRepository: cacheRepository)
+        
+        // when
+        let result = await useCase.fetchCurrentWeather(latitude: "", longitude: "")
+        
+        // then
+        XCTAssertEqual(result, expectation)
+    }
+    
+    func testCityWeather_StatusCode200_ValidCache() async {
+        // given
+        let expectation: CurrentWeather = TestHelpers.makeCacheCurrentWeather()
+        
+        mockSession.urlResponse = TestHelpers.makeMockURLResponse(statusCode: 200)
+        
+        let weatherRepository = DefaultWeatherRepository(session: mockSession)
+        let cacheRepository = makeCacheRepository_ValidCacheItem()
+        let useCase = DefaultWeatherUseCase(weatherRepository: weatherRepository, cacheRepository: cacheRepository)
+        
+        // when
+        let result = await useCase.fetchCurrentWeather(latitude: "", longitude: "")
+        
+        // then
+        XCTAssertEqual(result, expectation)
+    }
+    
+    func testCityWeather_StatusCode200_ExpiredCache() async {
+        // given
+        let expectation: CurrentWeather = TestHelpers.makeCurrentWeather()
+        
+        mockSession.urlResponse = TestHelpers.makeMockURLResponse(statusCode: 200)
+        
+        let weatherRepository = DefaultWeatherRepository(session: mockSession)
+        let cacheRepository = makeCacheRepository_ExpiredCacheItem()
+        let useCase = DefaultWeatherUseCase(weatherRepository: weatherRepository, cacheRepository: cacheRepository)
         
         // when
         let result = await useCase.fetchCurrentWeather(latitude: "", longitude: "")
@@ -38,11 +74,13 @@ final class WeatherUseCaseTests: XCTestCase {
     
     func testCityWeather_StatusCode400() async {
         // given
-        mockSession.urlResponse = TestHelpers.makeMockURLResponse(statusCode: 400)
-        let repository = DefaultWeatherRepository(session: mockSession)
-        let useCase = DefaultWeatherUseCase(weatherRepository: repository)
-        
         let expectation: CurrentWeather = .empty
+        
+        mockSession.urlResponse = TestHelpers.makeMockURLResponse(statusCode: 400)
+        
+        let weatherRepository = DefaultWeatherRepository(session: mockSession)
+        let cacheRepository = MockCacheWeatherRepository()
+        let useCase = DefaultWeatherUseCase(weatherRepository: weatherRepository, cacheRepository: cacheRepository)
         
         // when
         let result = await useCase.fetchCurrentWeather(latitude: "", longitude: "")
@@ -51,3 +89,19 @@ final class WeatherUseCaseTests: XCTestCase {
         XCTAssertEqual(result, expectation)
     }
 }
+
+extension WeatherUseCaseTests {
+    private func makeCacheRepository_ValidCacheItem() -> MockCacheWeatherRepository {
+        let cacheWeatherItem = CacheWeatherItem(timestamp: Date(),
+                                                currentWeather: TestHelpers.makeCacheCurrentWeather())
+        return MockCacheWeatherRepository(cacheWeatherItem: cacheWeatherItem)
+    }
+    
+    private func makeCacheRepository_ExpiredCacheItem() -> MockCacheWeatherRepository {
+        let cacheWeatherItem = CacheWeatherItem(timestamp: Date().addingTimeInterval(-120),
+                                                currentWeather: TestHelpers.makeCacheCurrentWeather())
+        return MockCacheWeatherRepository(cacheWeatherItem: cacheWeatherItem)
+    }
+}
+
+

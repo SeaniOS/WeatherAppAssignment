@@ -69,6 +69,10 @@ extension TestHelpers {
     static func makeCurrentWeather() -> CurrentWeather {
         return .init(imageURL: imageURL, description: weatherDescription, temperature: temperature, humidity: humidity)
     }
+    
+    static func makeCacheCurrentWeather() -> CurrentWeather {
+        return .init(imageURL: imageURL, description: weatherDescription + "Cache", temperature: temperature, humidity: humidity)
+    }
 }
 
 extension TestHelpers {
