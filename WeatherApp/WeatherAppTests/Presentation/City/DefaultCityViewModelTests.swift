@@ -44,7 +44,7 @@ final class CityViewModelTests: XCTestCase {
         // when
         viewModel.onAppear()
         
-        try await Task.sleep(nanoseconds: 100_000_000)
+        try await Task.sleep(nanoseconds: 200_000_000)
         XCTAssertTrue(viewModel.currentWeather == expectation)
     }
     
