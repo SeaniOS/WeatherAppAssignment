@@ -98,7 +98,7 @@ extension WeatherUseCaseTests {
     }
     
     private func makeCacheRepository_ExpiredCacheItem() -> MockCacheWeatherRepository {
-        let cacheWeatherItem = CacheWeatherItem(timestamp: Date().addingTimeInterval(-120),
+        let cacheWeatherItem = CacheWeatherItem(timestamp: Date().addingTimeInterval(-AppConstants.cacheExpiry),
                                                 currentWeather: TestHelpers.makeCacheCurrentWeather())
         return MockCacheWeatherRepository(cacheWeatherItem: cacheWeatherItem)
     }

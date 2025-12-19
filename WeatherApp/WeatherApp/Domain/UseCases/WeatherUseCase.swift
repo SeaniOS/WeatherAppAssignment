@@ -51,7 +51,7 @@ extension DefaultWeatherUseCase {
         }
         
         // check timestamp
-        if abs(cacheItem.timestamp.timeIntervalSinceNow) > AppConstants.cacheExpiry {
+        if abs(cacheItem.timestamp.timeIntervalSinceNow) >= AppConstants.cacheExpiry {
             // remove expired cache item
             cacheRepository.removeCache(key: key)
             return nil
