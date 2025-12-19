@@ -9,9 +9,19 @@ import Foundation
 import Combine
 
 protocol HomeViewModel {
-    var items: [String] { get }
+    var cities: [City] { get }
+    func fetchCityHistories()
 }
 
 final class DefaultHomeViewModel: HomeViewModel {
-    var items: [String] = []
+    var cities: [City] = []
+    private let cityHistoryUseCase: CityHistoryUseCase
+    
+    init(cityHistoryUseCase: CityHistoryUseCase) {
+        self.cityHistoryUseCase = cityHistoryUseCase
+    }
+    
+    func fetchCityHistories() {
+        cities = cityHistoryUseCase.fetchCityHistories()
+    }
 }

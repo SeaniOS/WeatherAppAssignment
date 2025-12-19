@@ -13,10 +13,14 @@ protocol DependencyInjection {
     func makeCityViewModel(city: City) -> DefaultCityViewModel
 }
 
-// MARK: - View Models
 class DependencyInjectionHandler: DependencyInjection {
+    
+}
+
+// MARK: - View Models
+extension DependencyInjectionHandler {
     func makeHomeViewModel() -> HomeViewModel {
-        return DefaultHomeViewModel()
+        return DefaultHomeViewModel(cityHistoryUseCase: makeCityHistoryUseCase())
     }
     
     func makeSearchResultsViewModel() -> SearchResultsViewModel {
@@ -24,7 +28,10 @@ class DependencyInjectionHandler: DependencyInjection {
     }
     
     func makeCityViewModel(city: City) -> DefaultCityViewModel {
-        return DefaultCityViewModel(city: city, weatherUseCase: makeWeatherUseCase(), imageUseCase: makeImageUseCase())
+        return DefaultCityViewModel(city: city,
+                                    weatherUseCase: makeWeatherUseCase(),
+                                    imageUseCase: makeImageUseCase(),
+                                    cityHistoryUseCase: makeCityHistoryUseCase())
     }
 }
 
@@ -53,8 +60,6 @@ extension DependencyInjectionHandler {
     private func makeCacheWeatherRepository() -> CacheWeatherRepository {
         return DefaultCacheWeatherRepository.shared
     }
-    
-
 }
 
 // MARK: - Image
@@ -65,6 +70,17 @@ extension DependencyInjectionHandler {
     
     private func makeCacheImageRepository() -> CacheImageRepository {
         return DefaultCacheImageRepository.shared
+    }
+}
+
+// MARK: - City History
+extension DependencyInjectionHandler {
+    private func makeCityHistoryUseCase() -> CityHistoryUseCase {
+        return DefaultCityHistoryUseCase(cityHistoryRepository: makeCityHistoryRepository())
+    }
+    
+    private func makeCityHistoryRepository() -> CityHistoryRepository {
+        return DefaultCityHistoryRepository(context: CoreDataStack.shared.context)
     }
 }
 

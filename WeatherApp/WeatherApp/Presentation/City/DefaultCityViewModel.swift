@@ -20,19 +20,23 @@ protocol CityViewModel: AnyObject, ObservableObject {
 class DefaultCityViewModel: CityViewModel {
     private var weatherUseCase: WeatherUseCase!
     private var imageUseCase: ImageUseCase!
+    private var cityHistoryUseCase: CityHistoryUseCase!
     
     @Published var city: City
     @Published var currentWeather: CurrentWeather = .empty
     @Published var uiImage: UIImage?
     
-    init(city: City, weatherUseCase: WeatherUseCase, imageUseCase: ImageUseCase) {
+    init(city: City, weatherUseCase: WeatherUseCase, imageUseCase: ImageUseCase, cityHistoryUseCase: CityHistoryUseCase) {
         self.city = city
         self.weatherUseCase = weatherUseCase
         self.imageUseCase = imageUseCase
+        self.cityHistoryUseCase = cityHistoryUseCase
     }
     
     func onAppear() {
         Task {
+            cityHistoryUseCase.saveCityHistory(city: city)
+            
             // fetch current weather
             let currentWeather = await fetchWeather()
             myPrint(currentWeather)

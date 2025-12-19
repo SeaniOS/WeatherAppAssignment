@@ -39,7 +39,7 @@ final class HomeViewControllerTests: XCTestCase {
     func testTableView_cellForRow() {
         // given
         let firstItem = "firstItem"
-        viewModel.items = [firstItem]
+        viewModel.cities = [firstItem]
         
         // when
         let cell = sut.tableView(sut.tableView, cellForRowAt: IndexPath(row: 0, section: 0))
@@ -50,13 +50,13 @@ final class HomeViewControllerTests: XCTestCase {
     
     func testTableView_numberOfRow() {
         // given
-        viewModel.items = ["firstItem", "secondItem"]
+        viewModel.cities = ["firstItem", "secondItem"]
         
         // when
         let numberOfRows = sut.tableView(sut.tableView, numberOfRowsInSection: 0)
         
         // then
-        XCTAssertTrue(numberOfRows == viewModel.items.count)
+        XCTAssertTrue(numberOfRows == viewModel.cities.count)
     }
     
     @MainActor

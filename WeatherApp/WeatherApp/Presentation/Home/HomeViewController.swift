@@ -32,6 +32,12 @@ class HomeViewController: UIViewController {
         
         setupUI()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.fetchCityHistories()
+        tableView.reloadData()
+    }
 }
 
 // MARK: - Setup UI
@@ -44,6 +50,7 @@ extension HomeViewController {
     
     private func setupTableView() {
         tableView.dataSource = self
+        tableView.delegate = self
         tableView.backgroundColor = .clear
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -63,6 +70,8 @@ extension HomeViewController {
         searchController.obscuresBackgroundDuringPresentation = false
         
         navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false // show search bar immediately
+        definesPresentationContext = true
         
         let searchResultsController = searchController.searchResultsController as? SearchResultsViewController
         searchResultsController?.delegate = self
@@ -72,13 +81,22 @@ extension HomeViewController {
 // MARK: - UITableViewDataSource
 extension HomeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.items.count
+        viewModel.cities.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.textLabel?.text = viewModel.items[indexPath.row]
+        let city = viewModel.cities[indexPath.row]
+        cell.textLabel?.text = city.displayedName
         return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension HomeViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let city = viewModel.cities[indexPath.row]
+        goToCity(city)
     }
 }
 
@@ -95,6 +113,12 @@ extension HomeViewController: UISearchResultsUpdating {
 // MARK: - SearchResultsViewControllerDelegate
 extension HomeViewController: SearchResultsDelegate {
     func didSelectCity(_ city: City) {
+        goToCity(city)
+    }
+}
+
+extension HomeViewController {
+    private func goToCity(_ city: City) {
         let cityViewController = Scene().makeCityViewController(city: city)
         navigationController?.pushViewController(cityViewController, animated: true)
     }

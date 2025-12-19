@@ -9,5 +9,5 @@ import Foundation
 @testable import WeatherApp
 
 final class MockHomeViewModel: HomeViewModel {
-    var items: [String] = []
+    var cities: [City] = []
 }

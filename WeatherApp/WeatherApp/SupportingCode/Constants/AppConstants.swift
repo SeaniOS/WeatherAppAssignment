@@ -12,6 +12,7 @@ import SwiftUI
 enum AppConstants {
     static let debounceTime: Int = 400 // ms
     static let cacheExpiry: TimeInterval = 60
+    static let cityHistoryLimit: Int = 10
     
     enum ThemeColor {
         static let pantoneCloudDancerUIColor = UIColor(red: 240.0 / 255.0, green: 238.0 / 255.0, blue: 233.0 / 255.0, alpha: 1.0)
