@@ -10,4 +10,8 @@ import Foundation
 
 final class MockHomeViewModel: HomeViewModel {
     var cities: [City] = []
+    
+    func fetchCityHistories() {
+        myPrint(fetchCityHistories)
+    }
 }

@@ -38,19 +38,18 @@ final class HomeViewControllerTests: XCTestCase {
     
     func testTableView_cellForRow() {
         // given
-        let firstItem = "firstItem"
-        viewModel.cities = [firstItem]
+        viewModel.cities = [TestHelpers.makeCity()]
         
         // when
         let cell = sut.tableView(sut.tableView, cellForRowAt: IndexPath(row: 0, section: 0))
         
         // then
-        XCTAssertTrue(cell.textLabel?.text == firstItem)
+        XCTAssertTrue(cell.textLabel?.text == "Hanoi, Vietnam")
     }
     
     func testTableView_numberOfRow() {
         // given
-        viewModel.cities = ["firstItem", "secondItem"]
+        viewModel.cities = [TestHelpers.makeCity(), TestHelpers.makeCity()]
         
         // when
         let numberOfRows = sut.tableView(sut.tableView, numberOfRowsInSection: 0)

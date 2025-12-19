@@ -25,6 +25,27 @@ final class CoreDataStack {
         })
         return container
     }()
+    
+    lazy var testContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "WeatherAppCoreData")
+        
+        // InMemory
+        let description = NSPersistentStoreDescription()
+        description.type = NSInMemoryStoreType
+        description.shouldAddStoreAsynchronously = false // prevent race condition
+        
+        container.persistentStoreDescriptions = [description]
+        
+        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+            if let error = error as NSError? {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+        })
+        
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy // prevent crash or conflict
+        container.viewContext.automaticallyMergesChangesFromParent = true
+        return container
+    }()
 }
 
 /*

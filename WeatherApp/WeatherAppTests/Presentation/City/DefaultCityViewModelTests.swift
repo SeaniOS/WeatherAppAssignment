@@ -8,6 +8,7 @@
 import XCTest
 import SwiftUI
 @testable import WeatherApp
+internal import CoreData
 
 final class CityViewModelTests: XCTestCase {
     
@@ -36,7 +37,8 @@ final class CityViewModelTests: XCTestCase {
                                             cacheRepository: cacheRepository)
         
         let viewModel = DefaultCityViewModel(city: city, weatherUseCase: weatherUseCase,
-                                             imageUseCase: makeImageUseCase())
+                                             imageUseCase: makeImageUseCase(),
+                                             cityHistoryUseCase: makeCityHistoryUseCase())
         
         let expectation = TestHelpers.makeCurrentWeather()
         // when
@@ -61,5 +63,11 @@ extension CityViewModelTests {
     private func makeImageUseCase() -> ImageUseCase {
         let repository = DefaultCacheImageRepository.shared
         return DefaultImageUseCase(cacheImageRepository: repository)
+    }
+    
+    @MainActor
+    private func makeCityHistoryUseCase() -> CityHistoryUseCase {
+        let repository = DefaultCityHistoryRepository(context: CoreDataStack.shared.testContainer.viewContext)
+        return DefaultCityHistoryUseCase(cityHistoryRepository: repository)
     }
 }
