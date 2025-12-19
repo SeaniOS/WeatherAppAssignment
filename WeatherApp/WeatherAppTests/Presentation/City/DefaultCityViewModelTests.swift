@@ -31,10 +31,12 @@ final class CityViewModelTests: XCTestCase {
         
         let weatherRepository = DefaultWeatherRepository(session: mockSession)
         let cacheRepository = MockCacheWeatherRepository()
-        let useCase = DefaultWeatherUseCase(weatherRepository: weatherRepository,
+        
+        let weatherUseCase = DefaultWeatherUseCase(weatherRepository: weatherRepository,
                                             cacheRepository: cacheRepository)
         
-        let viewModel = DefaultCityViewModel(city: city, weatherUseCase: useCase)
+        let viewModel = DefaultCityViewModel(city: city, weatherUseCase: weatherUseCase,
+                                             imageUseCase: makeImageUseCase())
         
         let expectation = TestHelpers.makeCurrentWeather()
         // when
@@ -51,5 +53,13 @@ final class CityViewModelTests: XCTestCase {
         
         let _ = scene.makeCityViewController(city: city)
         try await Task.sleep(nanoseconds: 100_000_000)
+    }
+}
+
+extension CityViewModelTests {
+    @MainActor
+    private func makeImageUseCase() -> ImageUseCase {
+        let repository = DefaultCacheImageRepository.shared
+        return DefaultImageUseCase(cacheImageRepository: repository)
     }
 }

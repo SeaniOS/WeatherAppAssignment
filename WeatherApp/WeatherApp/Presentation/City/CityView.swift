@@ -41,9 +41,7 @@ extension CityView {
         HStack {
             Text("Humidity")
                 .bold()
-            if let humidity = viewModel.currentWeather?.humidity {
-                Text("\(humidity)%")
-            }
+            Text("\(viewModel.currentWeather.humidity)%")
         }
     }
     
@@ -60,18 +58,14 @@ extension CityView {
     
     @ViewBuilder
     private var weatherDescriptionView: some View {
-        if let description = viewModel.currentWeather?.description {
-            Text(description)
-        }
+        Text(viewModel.currentWeather.description)
     }
     
     private var temperatureView: some View {
         HStack {
             Text("Temperature")
                 .bold()
-            if let temperature = viewModel.currentWeather?.temperature {
-                Text("\(temperature)°C")
-            }
+            Text("\(viewModel.currentWeather.temperature)°C")
         }
     }
 }

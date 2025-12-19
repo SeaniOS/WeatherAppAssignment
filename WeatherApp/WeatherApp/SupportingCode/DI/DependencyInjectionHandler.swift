@@ -24,7 +24,7 @@ class DependencyInjectionHandler: DependencyInjection {
     }
     
     func makeCityViewModel(city: City) -> DefaultCityViewModel {
-        return DefaultCityViewModel(city: city, weatherUseCase: makeWeatherUseCase())
+        return DefaultCityViewModel(city: city, weatherUseCase: makeWeatherUseCase(), imageUseCase: makeImageUseCase())
     }
 }
 
@@ -52,6 +52,19 @@ extension DependencyInjectionHandler {
     
     private func makeCacheWeatherRepository() -> CacheWeatherRepository {
         return DefaultCacheWeatherRepository.shared
+    }
+    
+
+}
+
+// MARK: - Image
+extension DependencyInjectionHandler {
+    private func makeImageUseCase() -> ImageUseCase {
+        return DefaultImageUseCase(cacheImageRepository: makeCacheImageRepository())
+    }
+    
+    private func makeCacheImageRepository() -> CacheImageRepository {
+        return DefaultCacheImageRepository.shared
     }
 }
 

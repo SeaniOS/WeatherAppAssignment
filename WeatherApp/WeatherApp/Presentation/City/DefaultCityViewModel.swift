@@ -13,24 +13,25 @@ protocol CityViewModel: AnyObject, ObservableObject {
     func onAppear()
     
     var city: City { get }
-    var currentWeather: CurrentWeather? { get }
+    var currentWeather: CurrentWeather { get }
     var uiImage: UIImage? { get }
 }
 
 class DefaultCityViewModel: CityViewModel {
     private var weatherUseCase: WeatherUseCase!
+    private var imageUseCase: ImageUseCase!
     
     @Published var city: City
-    @Published var currentWeather: CurrentWeather?
+    @Published var currentWeather: CurrentWeather = .empty
     @Published var uiImage: UIImage?
     
-    init(city: City, weatherUseCase: WeatherUseCase) {
+    init(city: City, weatherUseCase: WeatherUseCase, imageUseCase: ImageUseCase) {
         self.city = city
         self.weatherUseCase = weatherUseCase
+        self.imageUseCase = imageUseCase
     }
     
     func onAppear() {
-        // let urlString = "https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0004_black_low_cloud.png"
         Task {
             // fetch current weather
             let currentWeather = await fetchWeather()
@@ -41,7 +42,7 @@ class DefaultCityViewModel: CityViewModel {
             }
             
             // load weather icon
-            let uiImage = try? await ImageHandler().loadImage(urlString: currentWeather.imageURL)
+            let uiImage = try? await imageUseCase.loadImage(urlString: currentWeather.imageURL)
             
             await MainActor.run { [weak self] in
                 self?.uiImage = uiImage
@@ -56,4 +57,3 @@ extension DefaultCityViewModel {
         return currentWeather
     }
 }
-
