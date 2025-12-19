@@ -14,20 +14,23 @@ final class HomeViewControllerTests: XCTestCase {
     private var viewModel: MockHomeViewModel!
     private var searchResultsViewModel: MockSearchResultsViewModel!
     private var suit: HomeViewController!
+    private var searchResultsController: SearchResultsViewController!
     
     override func setUpWithError() throws {
         viewModel = MockHomeViewModel()
         searchResultsViewModel = MockSearchResultsViewModel()
         
         // searchController
-        let searchResultsController = SearchResultsViewController(viewModel: searchResultsViewModel)
+        searchResultsController = SearchResultsViewController(viewModel: searchResultsViewModel)
         let searchController = UISearchController(searchResultsController: searchResultsController)
         
         suit = HomeViewController(viewModel: viewModel, searchController: searchController)
+        loadViewController(searchController)
         loadViewController(suit)
     }
     
     override func tearDownWithError() throws {
+        searchResultsController = nil
         suit = nil
         viewModel = nil
         searchResultsViewModel = nil
@@ -43,6 +46,17 @@ final class HomeViewControllerTests: XCTestCase {
         
         // then
         XCTAssertTrue(cell.textLabel?.text == firstItem)
+    }
+    
+    func testTableView_numberOfRow() {
+        // given
+        viewModel.items = ["firstItem", "secondItem"]
+        
+        // when
+        let numberOfRows = suit.tableView(suit.tableView, numberOfRowsInSection: 0)
+        
+        // then
+        XCTAssertTrue(numberOfRows == viewModel.items.count)
     }
     
     @MainActor
@@ -61,5 +75,14 @@ final class HomeViewControllerTests: XCTestCase {
         suit.updateSearchResults(for: suit.searchController)
         
         XCTAssertTrue(searchResultsViewModel.receivedSearchTerm == "")
+    }
+    
+    @MainActor
+    func testsearchResults_DidSelectCity_DelegateIsTriggered() async throws {
+        searchResultsViewModel.searchedCities = [TestHelpers.makeCity()]
+        
+        searchResultsController.tableView(searchResultsController.tableView, didSelectRowAt: IndexPath(item: 0, section: 0))
+        
+        try await Task.sleep(nanoseconds: 100_000_000)
     }
 }

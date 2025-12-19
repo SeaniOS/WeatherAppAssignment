@@ -36,8 +36,9 @@ struct CurrentCondition: Codable, Equatable {
 
 // MARK: - Convert
 extension WeatherResponse {
-    func toCurrentWeather() -> CurrentWeather? {
-        guard let currentCondition = data.currentCondition.first else { return nil }
+    func toCurrentWeather() -> CurrentWeather {
+        guard let currentCondition = data.currentCondition.first else { return .empty }
+        
         return .init(imageURL: currentCondition.imageURL.firstValue,
                      description: currentCondition.description.firstValue,
                      temperature: currentCondition.temperature,

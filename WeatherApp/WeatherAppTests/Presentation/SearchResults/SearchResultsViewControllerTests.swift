@@ -48,7 +48,5 @@ final class SearchResultsViewControllerTests: XCTestCase {
         
         // when
         suit.tableView(suit.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
-        
-        XCTAssertTrue(true)
     }
 }

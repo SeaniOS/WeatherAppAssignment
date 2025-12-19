@@ -10,16 +10,11 @@ import Combine
 import UIKit
 
 final class ImageHandler {
-    func loadImage(urlString: String) async -> UIImage? {
+    func loadImage(urlString: String) async throws -> UIImage? {
         guard let url = URL(string: urlString) else { return nil }
         
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            let image = UIImage(data: data)
-            return image
-        } catch {
-            myPrint("loadImage failed with error: \(error.localizedDescription)")
-            return nil
-        }
+        let (data, _) = try await URLSession.shared.data(from: url)
+        let image = UIImage(data: data)
+        return image
     }
 }

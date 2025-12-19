@@ -21,7 +21,7 @@ final class DefaultWeatherUseCase: WeatherUseCase {
     func fetchCurrentWeather(latitude: String, longitude: String) async -> CurrentWeather {
         do {
             let response = try await weatherRepository.fetchCurrentWeather(latitude: latitude, longitude: longitude)
-            return response.toCurrentWeather() ?? CurrentWeather.empty
+            return response.toCurrentWeather()
         } catch {
             myPrint("fetchCurrentWeather with error: \(error.localizedDescription)")
             return CurrentWeather.empty

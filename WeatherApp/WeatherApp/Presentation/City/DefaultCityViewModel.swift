@@ -32,7 +32,7 @@ class DefaultCityViewModel: CityViewModel {
             let currentWeather = await fetchWeather()
             myPrint(currentWeather)
             
-            let uiImage = await ImageHandler().loadImage(urlString: currentWeather.imageURL)
+            let uiImage = try? await ImageHandler().loadImage(urlString: currentWeather.imageURL)
             myPrint(currentWeather.imageURL)
             
             await MainActor.run { [weak self] in
