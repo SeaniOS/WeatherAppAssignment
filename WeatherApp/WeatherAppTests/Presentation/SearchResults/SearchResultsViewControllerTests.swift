@@ -11,21 +11,21 @@ import XCTest
 final class SearchResultsViewControllerTests: XCTestCase {
     private let searchTerm = TestHelpers.searchTerm
     private var viewModel: MockSearchResultsViewModel!
-    private var suit: SearchResultsViewController!
+    private var sut: SearchResultsViewController!
 
     override func setUpWithError() throws {
         viewModel = MockSearchResultsViewModel()
-        suit = SearchResultsViewController(viewModel: viewModel)
-        loadViewController(suit)
+        sut = SearchResultsViewController(viewModel: viewModel)
+        loadViewController(sut)
     }
 
     override func tearDownWithError() throws {
-        suit = nil
+        sut = nil
     }
 
     func testUpdateItem() async {
         // when
-        await suit.updateItems(searchTerm: searchTerm)
+        await sut.updateItems(searchTerm: searchTerm)
         
         // then
         XCTAssertTrue(viewModel.receivedSearchTerm == searchTerm)
@@ -36,7 +36,7 @@ final class SearchResultsViewControllerTests: XCTestCase {
         viewModel.searchedCities = [TestHelpers.makeCity()]
         
         // when
-        let cell = suit.tableView(suit.tableView, cellForRowAt: IndexPath(row: 0, section: 0))
+        let cell = sut.tableView(sut.tableView, cellForRowAt: IndexPath(row: 0, section: 0))
         
         // then
         XCTAssertTrue(cell.textLabel?.text == "Hanoi - Vietnam")
@@ -47,6 +47,6 @@ final class SearchResultsViewControllerTests: XCTestCase {
         viewModel.searchedCities = [TestHelpers.makeCity()]
         
         // when
-        suit.tableView(suit.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
+        sut.tableView(sut.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
     }
 }

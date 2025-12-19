@@ -13,7 +13,7 @@ final class HomeViewControllerTests: XCTestCase {
     
     private var viewModel: MockHomeViewModel!
     private var searchResultsViewModel: MockSearchResultsViewModel!
-    private var suit: HomeViewController!
+    private var sut: HomeViewController!
     private var searchResultsController: SearchResultsViewController!
     
     override func setUpWithError() throws {
@@ -24,14 +24,14 @@ final class HomeViewControllerTests: XCTestCase {
         searchResultsController = SearchResultsViewController(viewModel: searchResultsViewModel)
         let searchController = UISearchController(searchResultsController: searchResultsController)
         
-        suit = HomeViewController(viewModel: viewModel, searchController: searchController)
+        sut = HomeViewController(viewModel: viewModel, searchController: searchController)
         loadViewController(searchController)
-        loadViewController(suit)
+        loadViewController(sut)
     }
     
     override func tearDownWithError() throws {
         searchResultsController = nil
-        suit = nil
+        sut = nil
         viewModel = nil
         searchResultsViewModel = nil
     }
@@ -42,7 +42,7 @@ final class HomeViewControllerTests: XCTestCase {
         viewModel.items = [firstItem]
         
         // when
-        let cell = suit.tableView(suit.tableView, cellForRowAt: IndexPath(row: 0, section: 0))
+        let cell = sut.tableView(sut.tableView, cellForRowAt: IndexPath(row: 0, section: 0))
         
         // then
         XCTAssertTrue(cell.textLabel?.text == firstItem)
@@ -53,7 +53,7 @@ final class HomeViewControllerTests: XCTestCase {
         viewModel.items = ["firstItem", "secondItem"]
         
         // when
-        let numberOfRows = suit.tableView(suit.tableView, numberOfRowsInSection: 0)
+        let numberOfRows = sut.tableView(sut.tableView, numberOfRowsInSection: 0)
         
         // then
         XCTAssertTrue(numberOfRows == viewModel.items.count)
@@ -62,8 +62,8 @@ final class HomeViewControllerTests: XCTestCase {
     @MainActor
     func testUpdateSearchResults() async throws {
         // when
-        suit.searchController.searchBar.text = searchTerm
-        suit.updateSearchResults(for: suit.searchController)
+        sut.searchController.searchBar.text = searchTerm
+        sut.updateSearchResults(for: sut.searchController)
         
         XCTAssertTrue(searchResultsViewModel.receivedSearchTerm == searchTerm)
     }
@@ -71,8 +71,8 @@ final class HomeViewControllerTests: XCTestCase {
     @MainActor
     func testUpdateSearchResults_SearchTextNil() async throws {
         // when
-        suit.searchController.searchBar.text = nil
-        suit.updateSearchResults(for: suit.searchController)
+        sut.searchController.searchBar.text = nil
+        sut.updateSearchResults(for: sut.searchController)
         
         XCTAssertTrue(searchResultsViewModel.receivedSearchTerm == "")
     }
