@@ -13,3 +13,11 @@ struct City: Codable, Equatable {
     let latitude: String
     let longitude: String
 }
+
+extension City {
+    /// some cities share the same name, therefore country should be displayed together
+    var displayedName: String {
+        if country.isEmpty { return name }
+        return "\(name), \(country)"
+    }
+}

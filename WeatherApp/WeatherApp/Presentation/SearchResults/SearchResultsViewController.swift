@@ -68,17 +68,10 @@ extension SearchResultsViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-        cell.textLabel?.text = getDisplayText(indexPath: indexPath)
-        return cell
-    }
-    
-    private func getDisplayText(indexPath: IndexPath) -> String {
-        let item = cities[indexPath.row]
-        let name = item.name
-        let country = item.country
         
-        /// some cities share the same name, therefore country should be displayed
-        return country.isEmpty ? name : "\(name) - \(country)"
+        let city = cities[indexPath.row]
+        cell.textLabel?.text = city.displayedName
+        return cell
     }
 }
 

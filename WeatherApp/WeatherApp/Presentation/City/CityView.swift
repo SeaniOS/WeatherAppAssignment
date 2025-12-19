@@ -9,7 +9,11 @@ import SwiftUI
 
 struct CityView<ViewModel: CityViewModel>: View {
     /// iOS14 for @StateObject
-    @StateObject var viewModel: ViewModel
+    @StateObject private var viewModel: ViewModel
+    
+    init(viewModel: ViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
     
     var body: some View {
         ZStack {
@@ -25,7 +29,7 @@ struct CityView<ViewModel: CityViewModel>: View {
                     humidityView
                 }
             }
-            .navigationBarTitle("Hanoi")
+            .navigationBarTitle(viewModel.city.displayedName)
             .onAppear(perform: viewModel.onAppear)
         }
     }
@@ -37,7 +41,9 @@ extension CityView {
         HStack {
             Text("Humidity")
                 .bold()
-            Text("83%")
+            if let humidity = viewModel.currentWeather?.humidity {
+                Text("\(humidity)%")
+            }
         }
     }
     
@@ -45,22 +51,34 @@ extension CityView {
     private var imageView: some View {
         if let image = viewModel.uiImage {
             Image(uiImage: image)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 72, height: 72)
+                .clipShape(RoundedRectangle(cornerRadius: 12.0))
         }
     }
     
+    @ViewBuilder
     private var weatherDescriptionView: some View {
-        Text("Partly Cloudy")
+        if let description = viewModel.currentWeather?.description {
+            Text(description)
+        }
     }
     
     private var temperatureView: some View {
         HStack {
             Text("Temperature")
                 .bold()
-            Text("21°C")
+            if let temperature = viewModel.currentWeather?.temperature {
+                Text("\(temperature)°C")
+            }
         }
     }
 }
 
 #Preview {
-    // CityView(viewModel: DefaultCityViewModel())
+    let city = City(name: "Hanoi", country: "Vietnam", latitude: "21.033", longitude: "105.850")
+    let vm = DependencyInjectionHandler().makeCityViewModel(city: city)
+    CityView(viewModel: vm)
 }
+

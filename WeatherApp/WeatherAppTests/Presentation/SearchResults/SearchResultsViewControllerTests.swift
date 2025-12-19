@@ -39,7 +39,7 @@ final class SearchResultsViewControllerTests: XCTestCase {
         let cell = sut.tableView(sut.tableView, cellForRowAt: IndexPath(row: 0, section: 0))
         
         // then
-        XCTAssertTrue(cell.textLabel?.text == "Hanoi - Vietnam")
+        XCTAssertTrue(cell.textLabel?.text == "Hanoi, Vietnam")
     }
     
     func testTableView_didSelectRow() {

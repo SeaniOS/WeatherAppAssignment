@@ -10,12 +10,16 @@ import UIKit
 import SwiftUI
 
 struct Scene {
-    private let DIHandler = DependencyInjectionHandler()
+    private var diHandler: DependencyInjectionHandler!
+    
+    init(diHandler: DependencyInjectionHandler = DependencyInjectionHandler()) {
+        self.diHandler = diHandler
+    }
 }
 
 extension Scene {
     func makeHomeViewController() -> HomeViewController {
-        let homeViewModel = DIHandler.makeHomeViewModel()
+        let homeViewModel = diHandler.makeHomeViewModel()
         let searchController = makeSearchController()
         
         let homeViewController = HomeViewController(viewModel: homeViewModel, searchController: searchController)
@@ -23,21 +27,22 @@ extension Scene {
     }
     
     func makeSearchController() -> UISearchController {
-        let viewModel = DIHandler.makeSearchResultsViewModel()
+        let viewModel = diHandler.makeSearchResultsViewModel()
         let searchResultsController = SearchResultsViewController(viewModel: viewModel)
         
         let searchController = UISearchController(searchResultsController: searchResultsController)
         return searchController
     }
     
-    private func makeCityView() -> CityView<DefaultCityViewModel> {
-        let viewModel = DIHandler.makeCityViewModel()
+    private func makeCityView(city: City) -> CityView<DefaultCityViewModel> {
+        let viewModel = diHandler.makeCityViewModel(city: city)
         let view = CityView(viewModel: viewModel)
         return view
     }
     
-    func makeCityViewController() -> UIViewController {
-        let cityView = makeCityView()
+    func makeCityViewController(city: City) -> UIViewController {
+        let cityView = makeCityView(city: city)
         return UIHostingController(rootView: cityView)
     }
 }
+

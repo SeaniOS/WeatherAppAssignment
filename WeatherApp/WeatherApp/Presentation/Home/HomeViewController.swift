@@ -95,7 +95,7 @@ extension HomeViewController: UISearchResultsUpdating {
 // MARK: - SearchResultsViewControllerDelegate
 extension HomeViewController: SearchResultsDelegate {
     func didSelectCity(_ city: City) {
-        let cityViewController = Scene().makeCityViewController()
+        let cityViewController = Scene().makeCityViewController(city: city)
         navigationController?.pushViewController(cityViewController, animated: true)
     }
 }

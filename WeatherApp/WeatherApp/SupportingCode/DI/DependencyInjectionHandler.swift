@@ -7,8 +7,14 @@
 
 import Foundation
 
+protocol DependencyInjection {
+    func makeHomeViewModel() -> HomeViewModel
+    func makeSearchResultsViewModel() -> SearchResultsViewModel
+    func makeCityViewModel(city: City) -> DefaultCityViewModel
+}
+
 // MARK: - View Models
-class DependencyInjectionHandler {
+class DependencyInjectionHandler: DependencyInjection {
     func makeHomeViewModel() -> HomeViewModel {
         return DefaultHomeViewModel()
     }
@@ -17,8 +23,8 @@ class DependencyInjectionHandler {
         return DefaultSearchResultsViewModel(cityUseCase: makeCityUseCase())
     }
     
-    func makeCityViewModel() -> DefaultCityViewModel {
-        return DefaultCityViewModel(weatherUseCase: makeWeatherUseCase())
+    func makeCityViewModel(city: City) -> DefaultCityViewModel {
+        return DefaultCityViewModel(city: city, weatherUseCase: makeWeatherUseCase())
     }
 }
 
@@ -43,3 +49,4 @@ extension DependencyInjectionHandler {
         return DefaultWeatherRepository()
     }
 }
+
