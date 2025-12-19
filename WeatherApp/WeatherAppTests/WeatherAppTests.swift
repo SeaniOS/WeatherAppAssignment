@@ -33,5 +33,24 @@ final class WeatherAppTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
-
+    
+    func testOptional_String_HasValue() {
+        let string: String? = "Hello"
+        XCTAssertTrue(string.orEmpty == "Hello")
+    }
+    
+    func testOptional_String_NoValue() {
+        let string: String? = nil
+        XCTAssertTrue(string.orEmpty == "")
+    }
+    
+    func testOptional_Array_HasValue() {
+        let array: [String]? = ["A"]
+        XCTAssertTrue(array.orEmpty == ["A"])
+    }
+    
+    func testOptional_Array_NoValue() {
+        let array: [String]? = nil
+        XCTAssertTrue(array.orEmpty == [])
+    }
 }

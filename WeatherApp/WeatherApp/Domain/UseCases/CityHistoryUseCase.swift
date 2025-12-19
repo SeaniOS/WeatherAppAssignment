@@ -30,16 +30,15 @@ final class DefaultCityHistoryUseCase: CityHistoryUseCase {
             // add
             cityHistoryRepository.addCityHistory(city: city)
         }
-        
     }
     
     func fetchCityHistories() -> [City] {
         cityHistoryRepository.fetchCityHistories()
             .map { cityHistory in
-                return City(name: cityHistory.name ?? "",
-                            country: cityHistory.country ?? "",
-                            latitude: cityHistory.latitude ?? "",
-                            longitude: cityHistory.longitude ?? "")
+                return City(name: cityHistory.name.orEmpty,
+                            country: cityHistory.country.orEmpty,
+                            latitude: cityHistory.latitude.orEmpty,
+                            longitude: cityHistory.longitude.orEmpty)
             }
     }
 }

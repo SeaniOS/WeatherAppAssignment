@@ -47,6 +47,17 @@ final class HomeViewControllerTests: XCTestCase {
         XCTAssertTrue(cell.textLabel?.text == "Hanoi, Vietnam")
     }
     
+    @MainActor
+    func testTableView_didSelectRow() async throws {
+        // given
+        viewModel.cities = [TestHelpers.makeCity()]
+        
+        // when
+        sut.tableView(sut.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
+        
+        try await Task.sleep(nanoseconds: 100_000_000)
+    }
+    
     func testTableView_numberOfRow() {
         // given
         viewModel.cities = [TestHelpers.makeCity(), TestHelpers.makeCity()]

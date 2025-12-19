@@ -26,8 +26,8 @@ extension DefaultCityHistoryRepository {
         ]
         request.fetchLimit = AppConstants.cityHistoryLimit
         
-        let histories = try? context.fetch(request)
-        return histories ?? []
+        let cityHistories = try? context.fetch(request)
+        return cityHistories.orEmpty
     }
     
     func fetchCity(latitude: String, longitude: String) -> CityHistory? {
@@ -50,11 +50,7 @@ extension DefaultCityHistoryRepository {
         item.latitude = city.latitude
         item.longitude = city.longitude
         
-        do {
-            try context.save()
-        } catch {
-            fatalError(error.localizedDescription)
-        }
+        try? context.save()
     }
 }
 
@@ -62,10 +58,6 @@ extension DefaultCityHistoryRepository {
     func updateTimestamp(cityHistory: CityHistory) {
         cityHistory.timestamp = Date()
         
-        do {
-            try context.save()
-        } catch {
-            fatalError(error.localizedDescription)
-        }
+        try? context.save()
     }
 }

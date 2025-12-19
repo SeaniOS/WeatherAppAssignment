@@ -9,14 +9,7 @@ import XCTest
 @testable import WeatherApp
 
 @MainActor
-final class ImageUseCaseTests: XCTestCase {
-    
-    override func setUpWithError() throws {
-    }
-
-    override func tearDownWithError() throws {
-    }
-    
+final class ImageUseCaseTests: XCTestCase {    
     func testLoadImage_Cache() async throws {
         // given
         let cacheImage = UIImage(systemName: "gear")
